@@ -1,1 +1,1 @@
-# fibaro-bridge
+# fibaro_bridge
