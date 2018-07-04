@@ -1,3 +1,9 @@
-from fibaro_bridge.config.config import FIBARO_IP
+import sys
+from src.api import API
 
-print(FIBARO_IP)
+class App():
+	def __init__(self):
+		pass
+
+	def start():
+		pass

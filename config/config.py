@@ -1,9 +1,8 @@
 import json
-from os.path import join, dirname, isfile
+from os.path import abspath, isfile
 import sys
 
-json_path = join(dirname(__file__), "config.json")
-json_path = join("../",json_path)
+json_path = abspath("./config.json")
 
 try:
 	with open(json_path) as json_data:
