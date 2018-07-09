@@ -19,3 +19,5 @@ APP_DEBUG = data['app']['debug']
 USER = data['app']['username']
 
 PASSWD = data['app']['password']
+
+FILENAME = data['data']['filename']
