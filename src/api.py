@@ -37,10 +37,10 @@ class API():
 		response=self._api.GET(url.users(),params)
 		return response
 
-	def getHistory(self):
+	def getHistory(self,start,end):
 		params = {}
 		url=Url()
-		response=self._api.GET(url.panelHistory(),params)
+		response=self._api.GET(url.panelHistory(start,end),params)
 		return response
 
 	def getInfo(self):

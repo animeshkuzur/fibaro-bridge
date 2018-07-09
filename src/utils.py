@@ -34,8 +34,9 @@ class Url():
 		self._url = self._url+"users"
 		return self._url
 
-	def panelHistory(self):
-		self._url = self._url+"panel/history"
+	def panelHistory(self,start,end):
+		self._url = self._url+"panels/history?from="+start+"&to="+end
+		#print(self._url)
 		return self._url
 
 	def energy(self):
@@ -61,6 +62,12 @@ class CSV():
 		pass
 
 	def write(self,data):
-		with open(FILENAME, 'a') as file:
-			wr = csv.writer(file, delimiter=',', quoting=csv.QUOTE_ALL)
-			wr.writerow(data)
+		try:
+			with open(FILENAME, 'a') as file:
+				wr = csv.writer(file, delimiter=',', quoting=csv.QUOTE_ALL)
+				wr.writerow(data)
+		except e:
+			print(e)
+			return -1
+		return 1
+

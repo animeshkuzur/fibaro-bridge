@@ -17,43 +17,58 @@ class Schematic():
 	def getSchematic(self):
 		if(self.getMetaData()==0):
 			sys.exit()
-		print("Meta Data Collected")
+		#print("Meta Data Collected")
 
-		self.getSections()
-		print(self.sections)
+		if(self.getSections()!=1):
+			print("error occured while mapping sections")
+			sys.exit()
+		#print(self.sections)
 
-		self.getRooms()
-		print(self.rooms)
-		print(self.section_room)
+		if(self.getRooms()!=1):
+			print("error occured while mapping rooms")
+			sys.exit()
+		#print(self.rooms)
+		#print(self.section_room)
 
-		self.getDevices()
-		print(self.devices)
-		print(self.room_device)
-		print(self.device_type)
+		if(self.getDevices()!=1):
+			print("error occured while mapping devices")
+			sys.exit()
 
-		print(self.getRoomId(353))
-		print(self.rooms[self.getRoomId(353)])
+		#print(self.devices)
+		#print(self.room_device)
+		#print(self.device_type)
+		return 1
+
+	def getDeviceName(self,device):
+		return self.devices[device]
 
 	def getDevices(self):
 		response=self.api.getDevices()
 		for res in response:
 			self.devices[res['id']]=res['name']
-			self.room_device[res['roomID']]=res['id']
+			self.room_device.setdefault(res['roomID'],[])
+			self.room_device[res['roomID']].append(res['id'])
 			self.device_type[res['id']]=res['type']
 		return 1
 
+	def getRoomName(self,room):
+		return self.rooms[room]
+
 	def getRoomId(self,device):
-		for roomID,deviceID in self.room_device.items():
-			if(device==deviceID):
-				return roomID
-			else:
-				return -1
+		for roomID,deviceIDs in self.room_device.items():
+			for deviceID in deviceIDs:
+				if(device==deviceID):
+					return roomID
+				else:
+					flag = 0
+		return flag
 
 	def getRooms(self):
 		response=self.api.getRooms()
 		for res in response:
 			self.rooms[res['id']]=res['name']
-			self.section_room[res['sectionID']]=res['id']
+			self.section_room.setdefault(res['sectionID'],[])
+			self.section_room[res['sectionID']].append(res['id'])
 		return 1
 
 	def getSections(self):
@@ -62,11 +77,20 @@ class Schematic():
 			self.sections[res['id']]=res['name']
 		return 1
 
+	def getSectionName(self,section):
+		return self.sections[section]
+
 	def getSectionId(self,room):
-		pass
+		for sectionID,roomIDs in self.section_room.items():
+			for roomID in roomIDs:
+				if(room==roomID):
+					return sectionID
+				else:
+					flag = 0
+		return flag
 
 	def getDeviceTypes(self,device):
-		pass
+		return self.device_type[device]
 
 	def getMetaData(self):
 		response=self.api.getInfo()
@@ -75,4 +99,6 @@ class Schematic():
 		print("Extracting for : "+response['hcName'])
 		return 1
 
+	def getDeviceValue(self,device,value):
+		pass
 
