@@ -11,7 +11,7 @@ A simple python script to map the Fibaro room schematic and collect all the even
 * Install all the required python modules `pip install -r requirements.txt`
 * After successful installation, clone this repository `git clone https://github.com/animeshkuzur/fibaro_bridge.git`
 * Copy and rename the `config.json.example` file to `config.json`
-* Change the following values inside the file.
+* Change the following values inside the file: `fibaro_ip`,`username` and `password`
 ```json
 {
 	"app":{
