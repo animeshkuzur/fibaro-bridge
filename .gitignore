@@ -2,5 +2,4 @@ __pycache__/
 config.json
 *.pyc
 *.pyo
-data
 data.csv
