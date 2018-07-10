@@ -37,10 +37,23 @@ class Schematic():
 		#print(self.devices)
 		#print(self.room_device)
 		#print(self.device_type)
+
+		# for a in self.devices:
+		# 	did=a
+		# 	name=self.getDeviceName(did)
+		# 	dtype=self.getDeviceTypes(did)
+		# 	print(str(did)+" - "+name+" - "+dtype)
+		# sys.exit()
 		return 1
 
 	def getDeviceName(self,device):
-		return self.devices[device]
+		try:
+			return self.devices[device]
+		except Exception as e:
+			#print('Device Not Found')
+			#print(e)
+			return None
+		
 
 	def getDevices(self):
 		response=self.api.getDevices()
@@ -52,7 +65,12 @@ class Schematic():
 		return 1
 
 	def getRoomName(self,room):
-		return self.rooms[room]
+		try:
+			return self.rooms[room]
+		except Exception as e:
+			#print('Room Not Found')
+			#print(e)
+			return None
 
 	def getRoomId(self,device):
 		for roomID,deviceIDs in self.room_device.items():
@@ -60,7 +78,7 @@ class Schematic():
 				if(device==deviceID):
 					return roomID
 				else:
-					flag = 0
+					flag = None
 		return flag
 
 	def getRooms(self):
@@ -78,7 +96,12 @@ class Schematic():
 		return 1
 
 	def getSectionName(self,section):
-		return self.sections[section]
+		try:
+			return self.sections[section]
+		except Exception as e:
+			#print('Section Not Found')
+			#print(e)
+			return None
 
 	def getSectionId(self,room):
 		for sectionID,roomIDs in self.section_room.items():
@@ -86,11 +109,16 @@ class Schematic():
 				if(room==roomID):
 					return sectionID
 				else:
-					flag = 0
+					flag = None
 		return flag
 
 	def getDeviceTypes(self,device):
-		return self.device_type[device]
+		try:
+			return self.device_type[device]
+		except Exception as e:
+			#print('Device Not Found')
+			#print(e)
+			return None
 
 	def getMetaData(self):
 		response=self.api.getInfo()
@@ -100,5 +128,43 @@ class Schematic():
 		return 1
 
 	def getDeviceValue(self,device,value):
-		pass
+		try:
+			d_type=self.getDeviceTypes(device)
+			if(d_type == 'com.fibaro.doorLock'):
+				if(value == '1.0'):
+					return 'Locked'
+				else:
+					return 'Unloacked'
+			elif(d_type == 'com.fibaro.binarySwitch'):
+				if(value == '1.0'):
+					return 'On'
+				else:
+					return 'Off'
+			elif(d_type == 'com.fibaro.multilevelSwitch'):
+				if(value == '0.0'):
+					return 'Off'
+				else:
+					txt = str(value)+" %"
+					return txt
+			elif(d_type == 'com.fibaro.motionSensor'):
+				if(value == '1.0'):
+					return "Movement Detected (Breach State)"
+				else:
+					return "No Movement (Safe State)"
+			elif(d_type == 'com.fibaro.doorSensor'):
+				if(value == '1.0'):
+					return "Door Opened (Breach State)"
+				else:
+					return "Door Closed (Safe State)"
+			elif(d_type == 'com.fibaro.temperatureSensor'):
+				txt = str(value)+" C"
+				return txt
+			elif(d_type == 'com.fibaro.lightSensor'):
+				txt = str(value)+" LUX"
+				return txt
+			else:
+				return value	
+
+		except Exception as e:
+			return None
 

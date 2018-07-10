@@ -46,7 +46,7 @@ class App():
 		start = end-86400
 		#response = self.api.getHistory(str(start),str(end))
 
-		csv_row = ['Section ID','Section Name','Room ID','Room Name','Device ID','Device Name','Device Type','Value','DateTime']
+		csv_row = ['Section ID','Section Name','Room ID','Room Name','Device ID','Device Name','Device Type','Value (Int)','Value (Str)','DateTime']
 		if(self.csv.write(csv_row)):
 			pass
 		else:
@@ -68,14 +68,25 @@ class App():
 		#response=self.api.getHistory(start,end)
 
 	def parser(self,data):
-		csv_row = []
-		roomid=self.schematic.getRoomId(data['deviceID'])
-		roomname=self.schematic.getRoomName(roomid)
-		sectionid=self.schematic.getSectionId(roomid)
-		sectionname=self.schematic.getSectionName(sectionid)
-		devicetype=self.schematic.getDeviceTypes(data['deviceID'])
-		value=data['value']
-		datetime=data['timestamp']
-		
+		for dat in data:
+			if(dat):
+				csv_row = []
+				roomid=self.schematic.getRoomId(int(dat['deviceID']))
+				#print(str(dat['deviceID'])+"="+str(roomid))
+				roomname=self.schematic.getRoomName(roomid)
+				sectionid=self.schematic.getSectionId(roomid)
+				sectionname=self.schematic.getSectionName(sectionid)
+				devicetype=self.schematic.getDeviceTypes(int(dat['deviceID']))
+				devicename=self.schematic.getDeviceName(int(dat['deviceID']))
+				value=dat['value']
+				valuename=self.schematic.getDeviceValue(int(dat['deviceID']),value)
+				datetime=time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(int(dat['timestamp'])))#data['timestamp']
+
+				csv_row = [sectionid,sectionname,roomid,roomname,int(dat['deviceID']),devicename,devicetype,value,valuename,datetime]
+				if(self.csv.write(csv_row)):
+					pass
+				else:
+					print("I/O Error Occured")
+					return -1
 		return 1
 
