@@ -1,4 +1,4 @@
-# fibaro_bridge
+# fibaro_data_extractor
 A simple python script to map the Fibaro room schematic and collect all the event log onto a .csv file. The temperature logs and electricity consumption logs are still in development.
 
 #### Prerequisite
@@ -9,7 +9,7 @@ A simple python script to map the Fibaro room schematic and collect all the even
 #### Setup Instructions
 * First check the Python version installed on your machine `python --verison` if the python version is >= `3.5.5` then you're good to go!
 * Install all the required python modules `pip install -r requirements.txt`
-* After successful installation, clone this repository `git clone https://github.com/animeshkuzur/fibaro_bridge.git`
+* After successful installation, clone this repository `git clone https://github.com/animeshkuzur/fibaro_data_extractor.git`
 * Copy and rename the `config.json.example` file to `config.json`
 * Change the following values inside the file: `fibaro_ip`,`username` and `password`
 ```json
@@ -24,9 +24,9 @@ A simple python script to map the Fibaro room schematic and collect all the even
 	},
 	"mysql":{
 		"host":"localhost",
-        "user":"root",
-        "password":"password",
-        "database":"database"
+		"user":"root",
+		"password":"password",
+		"database":"database"
 	},
 	"data":{
 		"filename":"./data/data.csv"
